@@ -1,10 +1,8 @@
 import React, { Component } from 'react'
-import {cmp} from './util/compare'
+import {cmp} from '../util/compare'
 import Card from './Card'
-import 'bootstrap/dist/css/bootstrap.css'
-import './App.scss';
 
-export default class App extends Component {
+export default class Search extends Component {
   constructor() {
     super()
     this.weaknesses = []

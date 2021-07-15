@@ -1,5 +1,7 @@
+import Search from "../components/Search"
+
 class Route {
-  constructor(func, path, name) {
+  constructor(func, path, name, inNav=true) {
     this.func = func
     this.path = path
     this.name = name
@@ -8,7 +10,7 @@ class Route {
 }
 
 const routes = [
-  new Route(() => <h1>Home</h1>, '/', 'Home'),
+  new Route(Search, '/', 'Search'),
 ]
 
 export default routes
