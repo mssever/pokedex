@@ -137,9 +137,9 @@ export default class Search extends Component {
             <div><div>
               <form id='search'>
                 <label htmlFor='search-list' className='form-label'>Filter the list of Pokemon...</label>
-                <input className='form-control' list='search-options' id='search-list' placeholder='Type to search by name...' />
-                <div className="form-check form-check-inline">
-                  <p>Only include Pokemon of these types:</p>
+                <input className='form-control mb-3' list='search-options' id='search-list' placeholder='Type to search by name...' />
+                <div className="form-check form-check-inline mb-3">
+                  <p className="mb-1">Only include Pokemon of these types:</p>
                   {this.types.sort().map(type => (
                     <React.Fragment key={type}>
                       <input className="btn-check type" type="checkbox" id={`type-${type}`} value={type} defaultChecked={this.typesChecked[type]} />
@@ -148,7 +148,7 @@ export default class Search extends Component {
                   ))}
                 </div>
                 <div className="form-check form-check-inline">
-                  <p>Only include Pokemon with these weaknesses:</p>
+                  <p className="mb-1">Only include Pokemon with these weaknesses:</p>
                   {this.weaknesses.sort().map(weakness => (
                     <React.Fragment key={weakness}>
                       <input className="btn-check weakness" type="checkbox" id={`weakness-${weakness}`} value={weakness} defaultChecked={this.weaknessesChecked[weakness]} />
