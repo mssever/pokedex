@@ -1,4 +1,5 @@
 import Search from "../components/Search"
+import Pokemon from '../components/Pokemon'
 
 class Route {
   constructor(func, path, name, inNav=true) {
@@ -11,6 +12,7 @@ class Route {
 
 const routes = [
   new Route(Search, '/', 'Search'),
+  new Route(Pokemon, '/pokemon/:id', 'Individual Pokemon')
 ]
 
 export default routes

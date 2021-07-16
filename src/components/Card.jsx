@@ -1,7 +1,9 @@
+// import {Link} from 'react-router-dom'
+
 export default function Card({item}) {
   return (
-    <div key={item.id} className='card mb-3'>
-      <div className="card-header">{item.name}</div>
+    <div className='card mb-2 shadow-sm'>
+      <div className="card-header fs-5 fw-bold">{/*<Link className='text-reset-bak' to={`/pokemon/${item.id}`}>*/}{item.name}{/*</Link>*/}</div>
       <div className="row g-0">
         <div className="col-md-4 img-wrapper">
           <img src={item.img} alt="" className="card-img card-img-top" />

@@ -1,8 +1,13 @@
+@import "../../node_modules/bootstrap/scss/bootstrap";
+
+$enable-shadows: true;
+$primary: #d97400;
+
 .card {
-  background-color: darken(aliceblue, 5%);
+  background-color: shade-color(aliceblue, 5%);
 
   .img-wrapper {
-    max-width: 10rem;
+    max-width: 8rem;
   }
 
   .card-text {
@@ -28,3 +33,14 @@
 .btn-check:checked + .btn-primary::before {
   content: '✓ ';
 }
+
+// @include media-breakpoint-up(sm) {
+//   .sidebar > div {
+//     position: relative;
+//     height: 100vh;
+
+//     & > div {
+//       position: fixed
+//     }
+//   }
+// }

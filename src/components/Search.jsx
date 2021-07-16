@@ -28,14 +28,15 @@ export default class Search extends Component {
     
     setTimeout(() => {
       let input = document.querySelector('#search-list');
-      let query
+      /*let query
       try {
         // TODO: Fix regex or switch to substring matching
         query = new RegExp(input.value, 'gi')
       } catch(e) {
         console.error(e)
         query = new RegExp('')
-      }
+      }*/
+      let query = input.value.toLowerCase()
       let data = this.fullData.pokemon
         .filter(item => {
           for (let i=0; i<this.types.length; i++) {
@@ -55,7 +56,8 @@ export default class Search extends Component {
           }
           return false
         })
-        .filter(item => query.test(item.name))
+        .filter(item => item.name.toLowerCase().includes(query))
+        //.filter(item => query.test(item.name))
       this.setState({
         pokemon: {
           pokemon: data
@@ -138,35 +140,41 @@ export default class Search extends Component {
   render() {
     let pokemon = this.state.pokemon.pokemon.sort((a,b) => cmp(a.name.toLowerCase(), b.name.toLowerCase()))
     return (
-      <React.Fragment>
-        <h1>Pokedex</h1>
-        <form id='search'>
-          <label htmlFor='search-list' className='form-label'>Filter the list of Pokemon <b>The search query is a case-insensitive global regular expression,</b> because why not?</label>
-          <input className='form-control' list='search-options' id='search-list' placeholder='Type to search by name...' />
-          <div className="form-check form-check-inline">
-            <p>Only include Pokemon of these types:</p>
-            {this.types.sort().map(type => (
-              <React.Fragment key={type}>
-                <input className="btn-check type" type="checkbox" id={`type-${type}`} value={type} defaultChecked={this.typesChecked[type]} />
-                <label htmlFor={`type-${type}`} className="btn btn-primary">{type}</label>
-              </React.Fragment>
-            ))}
+      <div className="container-fluid">
+        <div className="row align-items-start justify-content-between">
+          <div className="col bg-dark bg-gradient text-light sidebar">
+            <div><div>
+              <form id='search'>
+                <label htmlFor='search-list' className='form-label'>Filter the list of Pokemon...</label>
+                <input className='form-control' list='search-options' id='search-list' placeholder='Type to search by name...' />
+                <div className="form-check form-check-inline">
+                  <p>Only include Pokemon of these types:</p>
+                  {this.types.sort().map(type => (
+                    <React.Fragment key={type}>
+                      <input className="btn-check type" type="checkbox" id={`type-${type}`} value={type} defaultChecked={this.typesChecked[type]} />
+                      <label htmlFor={`type-${type}`} className="btn btn-primary">{type}</label>
+                    </React.Fragment>
+                  ))}
+                </div>
+                <div className="form-check form-check-inline">
+                  <p>Only include Pokemon with these weaknesses:</p>
+                  {this.weaknesses.sort().map(weakness => (
+                    <React.Fragment key={weakness}>
+                      <input className="btn-check weakness" type="checkbox" id={`weakness-${weakness}`} value={weakness} defaultChecked={this.weaknessesChecked[weakness]} />
+                      <label htmlFor={`weakness-${weakness}`} className="btn btn-primary">{weakness}</label>
+                    </React.Fragment>
+                  ))}
+                </div>
+              </form>
+            </div></div>
           </div>
-          <div className="form-check form-check-inline">
-            <p>Only include Pokemon with these weaknesses:</p>
-            {this.weaknesses.sort().map(weakness => (
-              <React.Fragment key={weakness}>
-                <input className="btn-check weakness" type="checkbox" id={`weakness-${weakness}`} value={weakness} defaultChecked={this.weaknessesChecked[weakness]} />
-                <label htmlFor={`weakness-${weakness}`} className="btn btn-primary">{weakness}</label>
-              </React.Fragment>
-            ))}
+          <div className="col-8">
+            <h1>Pokedex</h1>
+            <h2>Pokemon matching search criteria ({this.state.numPokemon})</h2>
+            {pokemon.map(item => <Card key={item.key} item={item} />)}
           </div>
-          <br />
-          <button type="submit" className="btn btn-primary mb-3">Search</button>
-        </form>
-        <h2>Pokemon matching search criteria ({this.state.numPokemon})</h2>
-        {pokemon.map(item => <Card key={item.key} item={item} />)}
-      </React.Fragment>
+        </div>
+      </div>
     )
   }
 }
