@@ -2,11 +2,11 @@ import Search from "../components/Search"
 import Pokemon from '../components/Pokemon'
 
 class Route {
-  constructor(func, path, name, inNav=true) {
+  constructor(func, path, name, data={}) {
     this.func = func
     this.path = path
     this.name = name
-    this.inNav = inNav
+    this.data = data
   }
 }
 

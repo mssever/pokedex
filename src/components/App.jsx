@@ -11,7 +11,7 @@ export default function App() {
                 {routes.map(route => {
                     return (
                         <Route key={route.path} exact path={route.path}>
-                            <route.func />
+                            <route.func data={route.data} />
                         </Route>
                     )
                 })}

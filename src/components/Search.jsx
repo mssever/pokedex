@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import {cmp} from '../util/compare'
+import { getPokemon } from '../util/net'
 import Card from './Card'
 
 export default class Search extends Component {
@@ -28,14 +29,6 @@ export default class Search extends Component {
     
     setTimeout(() => {
       let input = document.querySelector('#search-list');
-      /*let query
-      try {
-        // TODO: Fix regex or switch to substring matching
-        query = new RegExp(input.value, 'gi')
-      } catch(e) {
-        console.error(e)
-        query = new RegExp('')
-      }*/
       let query = input.value.toLowerCase()
       let data = this.fullData.pokemon
         .filter(item => {
@@ -82,9 +75,7 @@ export default class Search extends Component {
   }
 
   async componentDidMount() {
-    let pokemon_data = 'https://raw.githubusercontent.com/Biuni/PokemonGO-Pokedex/master/pokedex.json'
-    let response = await fetch(pokemon_data)
-    this.fullData = await response.json()
+    this.fullData = await getPokemon()
     // console.log(this.fullData.pokemon)
     this.weaknesses = []
     this.fullData.pokemon.forEach(item => {
@@ -171,7 +162,7 @@ export default class Search extends Component {
           <div className="col-8">
             <h1>Pokedex</h1>
             <h2>Pokemon matching search criteria ({this.state.numPokemon})</h2>
-            <div class="card-container d-flex flex-wrap">
+            <div className="card-container d-flex flex-wrap">
               {pokemon.map(item => <Card key={item.key} item={item} />)}
             </div>
           </div>
