@@ -171,7 +171,9 @@ export default class Search extends Component {
           <div className="col-8">
             <h1>Pokedex</h1>
             <h2>Pokemon matching search criteria ({this.state.numPokemon})</h2>
-            {pokemon.map(item => <Card key={item.key} item={item} />)}
+            <div class="card-container d-flex flex-wrap">
+              {pokemon.map(item => <Card key={item.key} item={item} />)}
+            </div>
           </div>
         </div>
       </div>
