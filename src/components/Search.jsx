@@ -1,7 +1,12 @@
 import React, { Component } from 'react'
 import {cmp} from '../util/compare'
-import { getPokemon } from '../util/net'
+import { getPokemon } from '../util/functions'
 import Card from './Card'
+
+//TODO: pass function to set state to subcomponents
+//      raise state to parent component
+// context Hook
+// redux
 
 export default class Search extends Component {
   constructor() {
@@ -163,7 +168,7 @@ export default class Search extends Component {
             <h1>Pokedex</h1>
             <h2>Pokemon matching search criteria ({this.state.numPokemon})</h2>
             <div className="card-container d-flex flex-wrap">
-              {pokemon.map(item => <Card key={item.key} item={item} />)}
+              {pokemon.map(item => <Card key={item.id} item={item} />)}
             </div>
           </div>
         </div>

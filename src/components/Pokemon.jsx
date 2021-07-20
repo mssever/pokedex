@@ -1,9 +1,12 @@
 import React from 'react'
-import { useParams } from 'react-router'
+import { useParams, useLocation } from 'react-router'
 import {Link} from 'react-router-dom'
-import { getPokemon } from '../util/net'
+import { getPokemon, any } from '../util/functions'
+import MiniCard from './MiniCard'
 
 export default function Pokemon() {
+    let {state: item} = useLocation() // TODO: Factor out the unnecessary fetch
+    console.log('item', item)
     let[pokemon, setPokemon] = React.useState({})
     let {id} = useParams()
     console.log(id)
@@ -17,12 +20,34 @@ export default function Pokemon() {
             setPokemon(data_pokemon)
         })()
     }, [id])
-    let p
-    if(pokemon[0]) {
-        p = pokemon[0]
-    } else {
-        p = pokemon
-    }
+    let p = pokemon
+    // let p
+    // if(pokemon[0]) {
+    //     p = pokemon[0]
+    // } else {
+    //     p = pokemon
+    // }
+
+    let personal = [
+        new PokemonProperty('Name', p.name),
+        new PokemonProperty('Num', p.num),
+        new PokemonProperty('Type', p.type),
+        new PokemonProperty('Weaknesses', p.weaknesses),
+        new PokemonProperty('Height', p.height),
+        new PokemonProperty('Weight', p.weight),
+        new PokemonProperty('Candy', p.candy ? `${p.candy} (Count: ${p.candy_count ? p.candy_count : 0})` : null),
+        new PokemonProperty('Egg', p.egg),
+    ]
+    let evolution = [
+        new PokemonProperty('Previous Evolution', p.prev_evolution, 'col-sm-6'),
+        new PokemonProperty('Next Evolution', p.next_evolution, 'col-sm-6'),
+    ]
+    let spawn = [
+        new PokemonProperty('Average Spawns', p.avg_spawns),
+        new PokemonProperty('Multipliers', p.multipliers),
+        new PokemonProperty('Spawn Chance', p.spawn_chance),
+        new PokemonProperty('Spawn Time', p.spawn_time),
+    ]
 
     return (
         <React.Fragment>
@@ -34,135 +59,43 @@ export default function Pokemon() {
                     Individual Pokemon: {p.name}
                 </h1>
             </div>
-            <div className="card-container d-flex flex-wrap"><div className="row">
-                <div class="col-sm-3"><div className="card mb-2 me-2">
-                    <div className="card-header fw-bold">Name</div>
-                    <div className="card-text">{p.name}</div>
-                </div></div>
-                <div class="col-sm-3"><div className="card mb-2 me-2">
-                    <div className="card-header fw-bold">Num</div>
-                    <div className="card-text">{p.num}</div>
-                </div></div>
-                <div class="col-sm-3"><div className="card mb-2 me-2">
-                    <div className="card-header fw-bold">Average Spawns</div>
-                    <div className="card-text">{p.avg_spawns}</div>
-                </div></div>
-                <div class="col-sm-3"><div className="card mb-2 me-2">
-                    <div className="card-header fw-bold">Candy</div>
-                    <div className="card-text">{p.candy} (count: {p.candy_count ? p.candy_count : 0})</div>
-                </div></div>
-                <div class="col-sm-3"><div className="card mb-2 me-2">
-                    <div className="card-header fw-bold">Egg</div>
-                    <div className="card-text">{p.egg}</div>
-                </div></div>
-                <div class="col-sm-3"><div className="card mb-2 me-2">
-                    <div className="card-header fw-bold">Height</div>
-                    <div className="card-text">{p.height}</div>
-                </div></div>
-                { (()=>{
-                    if(p.multipliers) {
-                        return (
-                            <div class="col-sm-3"><div className="card mb-2 me-2">
-                                <div className="card-header fw-bold">Multipliers</div>
-                                <div className="card-text">
-                                    <ul className="list-group list-group-flush">
-                                        {p.multipliers.map((item, idx) => <li className="list-group-item" key={idx}>{item}</li>)}
-                                    </ul>
-                                </div>
-                            </div></div>
-                        )
-                    }
-                })()}
-                { (()=>{
-                    if(p.next_evolution) {
-                        return (
-                            <div class="col-sm-3"><div className="card mb-2 me-2">
-                                <div className="card-header fw-bold">Next Evolution</div>
-                                <div className="card-text">
-                                    <ul className="list-group list-group-flush">
-                                        {p.next_evolution.map((item, idx) => {
-                                            return (
-                                                <li className="list-group-item" key={idx}>
-                                                    <Link to={`/pokemon/${item.num*1}`}>
-                                                        {item.name} (num {item.num})
-                                                    </Link>
-                                                </li>
-                                            )
-                                            })}
-                                    </ul>
-                                </div>
-                            </div></div>
-                        )
-                    }
-                })()}
-                { (()=>{
-                    if(p.prev_evolution) {
-                        return (
-                            <div class="col-sm-3"><div className="card mb-2 me-2">
-                                <div className="card-header fw-bold">Previous Evolution</div>
-                                <div className="card-text">
-                                    <ul className="list-group list-group-flush">
-                                        {p.prev_evolution.map((item, idx) => {
-                                            return (
-                                                <li className="list-group-item" key={idx}>
-                                                    <Link to={`/pokemon/${item.num*1}`}>
-                                                        {item.name} (num {item.num})
-                                                    </Link>
-                                                </li>
-                                            )
-                                        })}
-                                    </ul>
-                                </div>
-                            </div></div>
-                        )
-                    }
-                })()}
-                <div class="col-sm-3"><div className="card mb-2 me-2">
-                    <div className="card-header fw-bold">Spawn Chance</div>
-                    <div className="card-text">{p.spawn_chance}</div>
-                </div></div>
-                <div class="col-sm-3"><div className="card mb-2 me-2">
-                    <div className="card-header fw-bold">Spawn Time</div>
-                    <div className="card-text">{p.spawn_time}</div>
-                </div></div>
-                <div class="col-sm-3"><div className="card mb-2 me-2">
-                    <div className="card-header fw-bold">Type</div>
-                    <div className="card-text">
-                        <ul className="list-group list-group-flush">
-                            {(()=>{
-                                if(p.type) {
-                                    return p.type.map((item, idx) => <li className="list-group-item" key={idx}>{item}</li>)
-                                }
-                            })()}
-                        </ul>
-                    </div>
-                </div></div>
-                <div class="col-sm-3"><div className="card mb-2 me-2">
-                    <div className="card-header fw-bold">Weaknesses</div>
-                    <div className="card-text">
-                        <ul className="list-group list-group-flush">
-                            {(()=>{
-                                if(p.weaknesses) {
-                                    return p.weaknesses.map((item, idx) => {
-                                        return (
-                                            <li className="list-group-item" key={idx}>
-                                                {item}
-                                            </li>
-                                        )
-                                    })
-                                }
-                            })()}
-                        </ul>
-                    </div>
-                </div></div>
-                <div class="col-sm-3"><div className="card mb-2 me-2">
-                    <div className="card-header fw-bold">Weight</div>
-                    <div className="card-text">{p.weight}</div>
-                </div></div>
-            </div></div>
+            {details_section('Personal Details', personal)}
+            {details_section('Evolution Details', evolution)}
+            {details_section('Spawn Details', spawn)}
             <Link to='/'>
                 <button className="btn btn-secondary">Return to search</button>
             </Link>
         </React.Fragment>
     )
+}
+
+function details_section(title, arr) {
+    if(any(arr, (item, idx) => item.toJSX(idx))) {
+        return (
+            <React.Fragment>
+                <h2>{title}</h2>
+                <div className="card-container d-flex flex-wrap">
+                    <div className="row" style={{width: '100%'}}>
+                        {arr.map((item, idx) => item.toJSX(idx))}
+                    </div>
+                </div>
+            </React.Fragment>
+        )
+    }
+    return null
+}
+
+class PokemonProperty {
+    constructor(name, value, sizeClass="col-sm-3") {
+        this.name = name
+        this.value = value
+        this.sizeClass = sizeClass
+    }
+
+    toJSX(key) {
+        if(this.value) {
+            return <MiniCard key={key} title={this.name} content={this.value} sizeClass={this.sizeClass} />
+        }
+        return null
+    }
 }

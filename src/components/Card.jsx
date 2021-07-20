@@ -4,7 +4,10 @@ export default function Card({item}) {
   return (
     <div className='card mb-2 me-2 shadow-sm col-md-3'>
       <div className="card-header fs-5 fw-bold"><Link className='text-reset text-decoration-none' to={`/pokemon/${item.id}`}>{item.name}</Link></div>
-      <Link className="item mx-auto" to={`/pokemon/${item.id}`}><img src={item.img} alt="" /></Link>
+      <Link className="item mx-auto" to={{
+        pathname: `/pokemon/${item.id}`,
+        state: item
+      }}><img src={item.img} alt="" /></Link>
       <div className="card-text">
           <Link className='item' to={`/pokemon/${item.id}`}>
             <button className="btn btn-primary mt-2 fw-bold mx-auto">Details</button>
